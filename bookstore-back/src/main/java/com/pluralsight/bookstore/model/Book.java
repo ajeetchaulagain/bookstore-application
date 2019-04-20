@@ -32,6 +32,9 @@ public class Book {
     private String imageUrl;
     private Language language;
 
+    public Book() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -101,6 +104,17 @@ public class Book {
     }
 
     public void setLanguage(Language language) {
+        this.language = language;
+    }
+
+    public Book(String title, String description, Float unitCost, String isbn, Date publicationDate, Integer nbOfPages, String imageUrl, Language language) {
+        this.title = title;
+        this.description = description;
+        this.unitCost = unitCost;
+        this.isbn = isbn;
+        this.publicationDate = publicationDate;
+        this.nbOfPages = nbOfPages;
+        this.imageUrl = imageUrl;
         this.language = language;
     }
 
