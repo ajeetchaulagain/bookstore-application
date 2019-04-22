@@ -22,6 +22,18 @@ public class BookRepositoryTest {
     @Inject
     private BookRepository bookRepository;
 
+    @Test(expected = Exception.class)
+    public void findWithInvalidID(){
+        bookRepository.find(null);
+    }
+
+
+    @Test(expected = Exception.class)
+    public void createInvalidBook(){
+        Book book = new Book(null, "description", 12F,"isbn", new Date(),123,"http://test", Language.ENGLISH);
+        bookRepository.create(book);
+    }
+
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
@@ -52,6 +64,7 @@ public class BookRepositoryTest {
 
         // Check the found book
         assertEquals("isbn",bookFound.getTitle());
+
 
     }
 }
