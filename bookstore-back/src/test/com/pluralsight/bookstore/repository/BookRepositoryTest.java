@@ -2,6 +2,9 @@ package com.pluralsight.bookstore.repository;
 
 import com.pluralsight.bookstore.model.Book;
 import com.pluralsight.bookstore.model.Language;
+import com.pluralsight.bookstore.util.IsbnGenerator;
+import com.pluralsight.bookstore.util.NumberGenerator;
+import com.pluralsight.bookstore.util.TextUtil;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -12,6 +15,7 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 
+import java.awt.*;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -21,6 +25,8 @@ public class BookRepositoryTest {
 
     @Inject
     private BookRepository bookRepository;
+
+
 
     @Test(expected = Exception.class)
     public void findWithInvalidID(){
@@ -40,6 +46,9 @@ public class BookRepositoryTest {
                 .addClass(BookRepository.class)
                 .addClass(Book.class)
                 .addClass(Language.class)
+                .addClass(TextUtil.class)
+                .addClass(NumberGenerator.class)
+                .addClass(IsbnGenerator.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsManifestResource("META-INF/persistence.xml", "persistence.xml");
     }
@@ -52,7 +61,7 @@ public class BookRepositoryTest {
 
         // Create a Book
 //        String title, String description, Float unitCost, String isbn, Date publicationDate, Integer nbOfPages, String imageUrl, Language language
-         Book book = new Book("isbn", "description", 12F,"isbn", new Date(),123,"http://test", Language.ENGLISH);
+         Book book = new Book("a     title", "description", 12F,"isbn", new Date(),123,"http://test", Language.ENGLISH);
          book = bookRepository.create(book);
          Long bookId = book.getId();
 
@@ -63,7 +72,22 @@ public class BookRepositoryTest {
         Book bookFound = bookRepository.find(bookId);
 
         // Check the found book
-        assertEquals("isbn",bookFound.getTitle());
+        assertEquals("a title",bookFound.getTitle());
+        assertTrue(bookFound.getIsbn().startsWith("13"));
+
+
+
+        //Test counting books
+        assertEquals(Long.valueOf(1), bookRepository. countAll());
+        assertEquals(1, bookRepository.findAll().size());
+
+        // Delete the book
+        bookRepository.delete(bookId);
+
+        //Test counting books
+
+        assertEquals(Long.valueOf(0),bookRepository.countAll());
+        assertEquals(0,bookRepository.findAll().size());
 
 
     }
