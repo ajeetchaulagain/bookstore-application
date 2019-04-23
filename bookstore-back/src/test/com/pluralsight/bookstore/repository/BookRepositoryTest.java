@@ -6,6 +6,7 @@ import com.pluralsight.bookstore.util.IsbnGenerator;
 import com.pluralsight.bookstore.util.NumberGenerator;
 import com.pluralsight.bookstore.util.TextUtil;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;

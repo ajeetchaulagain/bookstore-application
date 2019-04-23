@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+import static javax.transaction.Transactional.TxType.REQUIRED;
 import static javax.transaction.Transactional.TxType.SUPPORTS;
 
 @Transactional(SUPPORTS)
@@ -30,7 +31,7 @@ public class BookRepository {
         return em.find(Book.class, id);
     }
 
-    @Transactional(Transactional.TxType.REQUIRED)
+    @Transactional(REQUIRED)
     public Book create(@NotNull Book book) {
         book.setTitle(textUtil.sanitize(book.getTitle()));
         book.setIsbn(generator.generateNumber());
@@ -38,7 +39,7 @@ public class BookRepository {
         return book;
     }
 
-    @Transactional(Transactional.TxType.REQUIRED)
+    @Transactional(REQUIRED)
     public void delete(@NotNull Long id) {
         em.remove(em.getReference(Book.class, id));
     }
